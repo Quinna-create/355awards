@@ -5,376 +5,463 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>355 Awards — Class Literary Rankings</title>
   <style>
+    /* ============================================================
+       Canvas-embeddable: fully self-contained, no external assets.
+       Transparent background blends into any Canvas page theme.
+    ============================================================ */
     :root {
-      --bg: #faf7f2;
-      --card: #ffffff;
-      --border: #e4ddd2;
-      --accent-lit: #5c4033;
-      --accent-gen: #234e52;
-      --accent-both: #6b4226;
-      --gold: #c9a84c;
-      --silver: #9e9e9e;
-      --bronze: #a0522d;
-      --text: #2d2d2d;
-      --muted: #7a7a7a;
+      --card:        #ffffff;
+      --border:      #ddd6cc;
+      --shadow:      rgba(0,0,0,0.07);
+      --accent-lit:  #5c4033;   /* warm brown  — Literary   */
+      --accent-gen:  #1e4d52;   /* deep teal   — Genre      */
+      --accent-top:  #7a3b1e;   /* rust        — Combined   */
+      --gold:        #b8860b;
+      --silver:      #757575;
+      --bronze:      #8b4513;
+      --stripe-lit:  #fdf8f5;
+      --stripe-gen:  #f3fafa;
+      --text:        #1e1e1e;
+      --muted:       #6b6b6b;
+      --tag-lit-bg:  #f5ede8;
+      --tag-gen-bg:  #e6f4f4;
+      --tag-both-bg: #fdf4e3;
+      --tag-both-fg: #7a4f10;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background: var(--bg);
+      background: transparent;   /* blends into Canvas background */
       color: var(--text);
       font-family: Georgia, "Times New Roman", serif;
-      line-height: 1.6;
-      padding: 2rem 1rem 4rem;
-    }
-
-    header {
-      text-align: center;
-      margin-bottom: 3rem;
-    }
-
-    header h1 {
-      font-size: 2.4rem;
-      letter-spacing: 0.04em;
-      color: var(--accent-lit);
-    }
-
-    header p {
-      margin-top: 0.5rem;
-      color: var(--muted);
-      font-style: italic;
-      font-size: 1rem;
-    }
-
-    .scoring-note {
-      text-align: center;
-      font-size: 0.85rem;
-      color: var(--muted);
-      margin-bottom: 2.5rem;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-      max-width: 900px;
-      margin: 0 auto 3rem;
-    }
-
-    @media (max-width: 640px) {
-      .grid { grid-template-columns: 1fr; }
-    }
-
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1.5rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-
-    .card h2 {
-      font-size: 1.1rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      margin-bottom: 1.2rem;
-      padding-bottom: 0.6rem;
-      border-bottom: 2px solid var(--border);
-    }
-
-    .card.literary h2  { color: var(--accent-lit); border-color: var(--accent-lit); }
-    .card.genre h2     { color: var(--accent-gen); border-color: var(--accent-gen); }
-
-    ol {
-      list-style: none;
-      padding: 0;
-    }
-
-    ol li {
-      display: flex;
-      align-items: baseline;
-      gap: 0.75rem;
-      padding: 0.55rem 0;
-      border-bottom: 1px solid var(--border);
-      font-size: 0.95rem;
-    }
-
-    ol li:last-child { border-bottom: none; }
-
-    .rank {
-      font-size: 0.8rem;
-      font-weight: bold;
-      min-width: 1.4rem;
-      text-align: right;
-      flex-shrink: 0;
-    }
-
-    .rank.gold   { color: var(--gold); }
-    .rank.silver { color: var(--silver); }
-    .rank.bronze { color: var(--bronze); }
-    .rank.other  { color: var(--muted); }
-
-    .title { flex: 1; }
-
-    .pts {
-      font-size: 0.75rem;
-      color: var(--muted);
-      white-space: nowrap;
-    }
-
-    /* ---- Combined section ---- */
-    .combined-wrapper {
+      font-size: 16px;
+      line-height: 1.65;
+      padding: 1.5rem 1rem 3rem;
       max-width: 900px;
       margin: 0 auto;
     }
 
-    .combined-wrapper h2 {
+    /* ---- Header ---- */
+    .site-header {
       text-align: center;
-      font-size: 1.3rem;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: var(--accent-both);
-      margin-bottom: 1rem;
+      padding: 1.8rem 1rem 1.5rem;
+      border-bottom: 3px double var(--accent-top);
+      margin-bottom: 2.2rem;
     }
 
-    .combined-wrapper p.note {
+    .site-header h1 {
+      font-size: 2rem;
+      letter-spacing: 0.05em;
+      color: var(--accent-top);
+      margin-bottom: 0.25rem;
+    }
+
+    .site-header .subtitle {
+      font-style: italic;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    /* ---- Section titles ---- */
+    .section-label {
       text-align: center;
-      font-size: 0.82rem;
+      font-size: 0.72rem;
+      font-family: Arial, sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+    }
+
+    /* ============================================================
+       COMBINED — hero block at top
+    ============================================================ */
+    .combined-section {
+      margin-bottom: 2.8rem;
+    }
+
+    .combined-section h2 {
+      text-align: center;
+      font-size: 1.2rem;
+      letter-spacing: 0.04em;
+      color: var(--accent-top);
+      margin-bottom: 0.35rem;
+    }
+
+    .combined-note {
+      text-align: center;
+      font-size: 0.78rem;
       color: var(--muted);
       font-style: italic;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem;
     }
 
-    .combined-card {
+    .combined-list {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1.5rem 2rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border-radius: 10px;
+      box-shadow: 0 3px 10px var(--shadow);
+      overflow: hidden;
     }
 
-    .combined-card ol li {
-      font-size: 1rem;
-      padding: 0.65rem 0;
+    .combined-list ol {
+      list-style: none;
     }
+
+    .combined-list ol li {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 1rem;
+      transition: background 0.15s;
+    }
+
+    .combined-list ol li:last-child { border-bottom: none; }
+
+    /* Alternating stripe */
+    .combined-list ol li:nth-child(even) { background: #fafaf8; }
+
+    /* Top-3 highlight rows */
+    .combined-list ol li.top1 { background: #fffbef; }
+    .combined-list ol li.top2 { background: #f8f8f8; }
+    .combined-list ol li.top3 { background: #fdf6f1; }
+
+    /* ---- Medal / rank badge ---- */
+    .medal {
+      font-size: 1.35rem;
+      line-height: 1;
+      flex-shrink: 0;
+      width: 2rem;
+      text-align: center;
+    }
+
+    .rank-num {
+      font-family: Arial, sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--muted);
+      flex-shrink: 0;
+      width: 2rem;
+      text-align: center;
+    }
+
+    .item-title { flex: 1; }
 
     .tag {
       display: inline-block;
-      font-size: 0.68rem;
-      font-family: "Helvetica Neue", Arial, sans-serif;
-      font-weight: 600;
-      letter-spacing: 0.05em;
+      font-size: 0.62rem;
+      font-family: Arial, sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.07em;
       text-transform: uppercase;
       border-radius: 3px;
-      padding: 1px 6px;
+      padding: 1px 5px;
       vertical-align: middle;
-      margin-left: 4px;
+      margin-left: 5px;
+      white-space: nowrap;
     }
 
-    .tag.lit  { background: #f3ece7; color: var(--accent-lit); }
-    .tag.gen  { background: #e8f4f3; color: var(--accent-gen); }
-    .tag.both { background: #fdf3e3; color: #8a5e28; }
+    .tag.lit  { background: var(--tag-lit-bg);  color: var(--accent-lit); }
+    .tag.gen  { background: var(--tag-gen-bg);  color: var(--accent-gen); }
+    .tag.both { background: var(--tag-both-bg); color: var(--tag-both-fg); }
 
-    footer {
+    /* ============================================================
+       PER-CATEGORY GRID
+    ============================================================ */
+    .category-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 580px) {
+      .category-grid { grid-template-columns: 1fr; }
+    }
+
+    .cat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: 0 3px 10px var(--shadow);
+      overflow: hidden;
+    }
+
+    .cat-card-header {
+      padding: 0.75rem 1.1rem;
+      font-size: 0.78rem;
+      font-family: Arial, sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .cat-card.literary .cat-card-header {
+      background: var(--accent-lit);
+      color: #fff;
+    }
+
+    .cat-card.genre .cat-card-header {
+      background: var(--accent-gen);
+      color: #fff;
+    }
+
+    .cat-card ol { list-style: none; }
+
+    .cat-card ol li {
+      display: flex;
+      align-items: baseline;
+      gap: 0.7rem;
+      padding: 0.5rem 1.1rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+
+    .cat-card ol li:last-child { border-bottom: none; }
+
+    .cat-card.literary ol li:nth-child(even) { background: var(--stripe-lit); }
+    .cat-card.genre    ol li:nth-child(even) { background: var(--stripe-gen); }
+
+    .cat-rank {
+      font-family: Arial, sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      width: 1.5rem;
+      text-align: right;
+    }
+
+    .cat-rank.gold   { color: var(--gold); }
+    .cat-rank.silver { color: var(--silver); }
+    .cat-rank.bronze { color: var(--bronze); }
+    .cat-rank.other  { color: var(--muted); }
+
+    .cat-title { flex: 1; }
+
+    .cat-pts {
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-family: Arial, sans-serif;
+      white-space: nowrap;
+    }
+
+    /* ---- Divider label between sections ---- */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 2.2rem 0 1.4rem;
+      color: var(--muted);
+      font-size: 0.7rem;
+      font-family: Arial, sans-serif;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ---- Footer ---- */
+    .site-footer {
+      margin-top: 2.5rem;
       text-align: center;
-      margin-top: 3rem;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: var(--muted);
       font-style: italic;
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
     }
   </style>
 </head>
 <body>
 
-<header>
+<!-- ====== Header ====== -->
+<header class="site-header">
   <h1>355 Awards</h1>
-  <p>Class Literary Awards — Weighted Rankings</p>
+  <p class="subtitle">Class Literary Awards &mdash; Weighted Rankings</p>
 </header>
 
-<p class="scoring-note">
-  Scoring: 1st place&nbsp;= 3 pts &nbsp;·&nbsp; 2nd place&nbsp;= 2 pts &nbsp;·&nbsp; 3rd place&nbsp;= 1 pt
-</p>
-
-<!-- Per-category cards -->
-<div class="grid">
-
-  <!-- Literary Fiction -->
-  <div class="card literary">
-    <h2>Literary Fiction</h2>
-    <ol>
-      <li>
-        <span class="rank gold">1</span>
-        <span class="title">Tokyo Ueno Station</span>
-        <span class="pts">8 pts</span>
-      </li>
-      <li>
-        <span class="rank silver">2</span>
-        <span class="title">An Artist of the Floating World</span>
-        <span class="pts">6 pts</span>
-      </li>
-      <li>
-        <span class="rank bronze">3</span>
-        <span class="title">Ten Nights Dreaming</span>
-        <span class="pts">3 pts</span>
-      </li>
-      <li>
-        <span class="rank bronze">3</span>
-        <span class="title">The Precious Incense and Autumn Flowers of Sendai</span>
-        <span class="pts">3 pts</span>
-      </li>
-      <li>
-        <span class="rank other">5</span>
-        <span class="title">Bamboo Sword</span>
-        <span class="pts">2 pts</span>
-      </li>
-      <li>
-        <span class="rank other">6</span>
-        <span class="title">Date's Black Ships</span>
-        <span class="pts">1 pt</span>
-      </li>
-    </ol>
-  </div>
-
-  <!-- Genre Fiction -->
-  <div class="card genre">
-    <h2>Genre Fiction</h2>
-    <ol>
-      <li>
-        <span class="rank gold">1</span>
-        <span class="title">Bamboo Sword</span>
-        <span class="pts">5 pts</span>
-      </li>
-      <li>
-        <span class="rank silver">2</span>
-        <span class="title">Fisherman of the Inland Sea</span>
-        <span class="pts">4 pts</span>
-      </li>
-      <li>
-        <span class="rank bronze">3</span>
-        <span class="title">Crimson Cloak</span>
-        <span class="pts">3 pts</span>
-      </li>
-      <li>
-        <span class="rank bronze">3</span>
-        <span class="title">Ikemen Sengoku</span>
-        <span class="pts">3 pts</span>
-      </li>
-      <li>
-        <span class="rank bronze">3</span>
-        <span class="title">Tokyo Ueno Station</span>
-        <span class="pts">3 pts</span>
-      </li>
-      <li>
-        <span class="rank other">6</span>
-        <span class="title">The Girl Who Leapt through Time</span>
-        <span class="pts">2 pts</span>
-      </li>
-      <li>
-        <span class="rank other">7</span>
-        <span class="title">Ten Nights Dreaming</span>
-        <span class="pts">1 pt</span>
-      </li>
-    </ol>
-  </div>
-
-</div><!-- .grid -->
-
-<!-- Combined ranking -->
-<div class="combined-wrapper">
-  <h2>Combined Rankings — Literary &amp; Genre Fiction</h2>
-  <p class="note">
-    Scores are normalised within each category (÷ category maximum) then summed,
-    so Literary and Genre titles can be compared on a common scale.
+<!-- ====== Combined Rankings (hero) ====== -->
+<section class="combined-section" aria-labelledby="combined-heading">
+  <p class="section-label">Overall Best Readings</p>
+  <h2 id="combined-heading">Combined Literary &amp; Genre Fiction</h2>
+  <p class="combined-note">
+    Weighted by rank position (1st&nbsp;= 3 pts, 2nd&nbsp;= 2 pts, 3rd&nbsp;= 1 pt),
+    then normalised across both categories so all titles compete on a common scale.
   </p>
-  <div class="combined-card">
+
+  <div class="combined-list">
     <ol>
-      <li>
-        <span class="rank gold">1</span>
-        <span class="title">
+      <li class="top1">
+        <span class="medal" aria-label="Gold medal">🥇</span>
+        <span class="item-title">
           Tokyo Ueno Station
           <span class="tag both">Literary &amp; Genre</span>
         </span>
-        <span class="pts">1.60</span>
       </li>
-      <li>
-        <span class="rank silver">2</span>
-        <span class="title">
+      <li class="top2">
+        <span class="medal" aria-label="Silver medal">🥈</span>
+        <span class="item-title">
           Bamboo Sword
           <span class="tag both">Literary &amp; Genre</span>
         </span>
-        <span class="pts">1.25</span>
       </li>
-      <li>
-        <span class="rank bronze">3</span>
-        <span class="title">
+      <li class="top3">
+        <span class="medal" aria-label="Bronze medal">🥉</span>
+        <span class="item-title">
           Fisherman of the Inland Sea
           <span class="tag gen">Genre</span>
         </span>
-        <span class="pts">0.80</span>
       </li>
       <li>
-        <span class="rank other">4</span>
-        <span class="title">
+        <span class="rank-num" aria-label="Rank 4">4</span>
+        <span class="item-title">
           An Artist of the Floating World
           <span class="tag lit">Literary</span>
         </span>
-        <span class="pts">0.75</span>
       </li>
       <li>
-        <span class="rank other">5</span>
-        <span class="title">
+        <span class="rank-num" aria-label="Rank 5">5</span>
+        <span class="item-title">
           Crimson Cloak
           <span class="tag gen">Genre</span>
         </span>
-        <span class="pts">0.60</span>
       </li>
       <li>
-        <span class="rank other">5</span>
-        <span class="title">
+        <span class="rank-num" aria-label="Rank 5">5</span>
+        <span class="item-title">
           Ikemen Sengoku
           <span class="tag gen">Genre</span>
         </span>
-        <span class="pts">0.60</span>
       </li>
       <li>
-        <span class="rank other">7</span>
-        <span class="title">
+        <span class="rank-num" aria-label="Rank 7">7</span>
+        <span class="item-title">
           Ten Nights Dreaming
           <span class="tag both">Literary &amp; Genre</span>
         </span>
-        <span class="pts">0.57</span>
       </li>
       <li>
-        <span class="rank other">8</span>
-        <span class="title">
+        <span class="rank-num" aria-label="Rank 8">8</span>
+        <span class="item-title">
           The Girl Who Leapt through Time
           <span class="tag gen">Genre</span>
         </span>
-        <span class="pts">0.40</span>
       </li>
       <li>
-        <span class="rank other">9</span>
-        <span class="title">
+        <span class="rank-num" aria-label="Rank 9">9</span>
+        <span class="item-title">
           The Precious Incense and Autumn Flowers of Sendai
           <span class="tag lit">Literary</span>
         </span>
-        <span class="pts">0.38</span>
       </li>
       <li>
-        <span class="rank other">10</span>
-        <span class="title">
-          Date's Black Ships
+        <span class="rank-num" aria-label="Rank 10">10</span>
+        <span class="item-title">
+          Date&rsquo;s Black Ships
           <span class="tag lit">Literary</span>
         </span>
-        <span class="pts">0.12</span>
       </li>
     </ol>
   </div>
-</div>
+</section>
 
-<footer>
-  355 Awards &mdash; weighted by position (3-2-1), combined scores normalised per category
+<!-- ====== Per-category Rankings ====== -->
+<div class="divider" role="separator">By Category</div>
+
+<div class="category-grid">
+
+  <!-- Literary Fiction -->
+  <section class="cat-card literary" aria-labelledby="lit-heading">
+    <div class="cat-card-header" id="lit-heading">Literary Fiction</div>
+    <ol>
+      <li>
+        <span class="cat-rank gold" aria-label="1st">1</span>
+        <span class="cat-title">Tokyo Ueno Station</span>
+        <span class="cat-pts">8 pts</span>
+      </li>
+      <li>
+        <span class="cat-rank silver" aria-label="2nd">2</span>
+        <span class="cat-title">An Artist of the Floating World</span>
+        <span class="cat-pts">6 pts</span>
+      </li>
+      <li>
+        <span class="cat-rank bronze" aria-label="3rd (tied)">3</span>
+        <span class="cat-title">Ten Nights Dreaming</span>
+        <span class="cat-pts">3 pts</span>
+      </li>
+      <li>
+        <span class="cat-rank bronze" aria-label="3rd (tied)">3</span>
+        <span class="cat-title">The Precious Incense and Autumn Flowers of Sendai</span>
+        <span class="cat-pts">3 pts</span>
+      </li>
+      <li>
+        <span class="cat-rank other" aria-label="5th">5</span>
+        <span class="cat-title">Bamboo Sword</span>
+        <span class="cat-pts">2 pts</span>
+      </li>
+      <li>
+        <span class="cat-rank other" aria-label="6th">6</span>
+        <span class="cat-title">Date&rsquo;s Black Ships</span>
+        <span class="cat-pts">1 pt</span>
+      </li>
+    </ol>
+  </section>
+
+  <!-- Genre Fiction -->
+  <section class="cat-card genre" aria-labelledby="gen-heading">
+    <div class="cat-card-header" id="gen-heading">Genre Fiction</div>
+    <ol>
+      <li>
+        <span class="cat-rank gold" aria-label="1st">1</span>
+        <span class="cat-title">Bamboo Sword</span>
+        <span class="cat-pts">5 pts</span>
+      </li>
+      <li>
+        <span class="cat-rank silver" aria-label="2nd">2</span>
+        <span class="cat-title">Fisherman of the Inland Sea</span>
+        <span class="cat-pts">4 pts</span>
+      </li>
+      <li>
+        <span class="cat-rank bronze" aria-label="3rd (tied)">3</span>
+        <span class="cat-title">Crimson Cloak</span>
+        <span class="cat-pts">3 pts</span>
+      </li>
+      <li>
+        <span class="cat-rank bronze" aria-label="3rd (tied)">3</span>
+        <span class="cat-title">Ikemen Sengoku</span>
+        <span class="cat-pts">3 pts</span>
+      </li>
+      <li>
+        <span class="cat-rank bronze" aria-label="3rd (tied)">3</span>
+        <span class="cat-title">Tokyo Ueno Station</span>
+        <span class="cat-pts">3 pts</span>
+      </li>
+      <li>
+        <span class="cat-rank other" aria-label="6th">6</span>
+        <span class="cat-title">The Girl Who Leapt through Time</span>
+        <span class="cat-pts">2 pts</span>
+      </li>
+      <li>
+        <span class="cat-rank other" aria-label="7th">7</span>
+        <span class="cat-title">Ten Nights Dreaming</span>
+        <span class="cat-pts">1 pt</span>
+      </li>
+    </ol>
+  </section>
+
+</div><!-- .category-grid -->
+
+<footer class="site-footer">
+  355 Awards &mdash; scoring: 1st&nbsp;= 3 pts &middot; 2nd&nbsp;= 2 pts &middot; 3rd&nbsp;= 1 pt &middot; combined scores normalised per category
 </footer>
 
 </body>
